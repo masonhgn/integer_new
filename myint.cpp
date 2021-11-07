@@ -98,12 +98,15 @@ MyInt operator+(const MyInt &x, const MyInt &y) {
 
 MyInt operator*(const MyInt &x, const MyInt &y) {
     MyInt temp, temp_final;
-
+    int count = 0;
     int subproduct = 0;
-    for (int i=y.current_size-1;i>=0;i--) { //loop through all digits of second number
-        cout << " =digit "<< y.ints[i] << endl;
-        int carry = 0, hold = 0;
-        for (int a=x.current_size-1;a>=0;a--) { //loop through all digits of first number backwards
+    int hold = 0;
+    for (int i=y.current_size-1;i>=0;--i) { //loop through all digits of second number
+        cout << "         =digit "<< y.ints[i] << endl;
+        int carry = 0;
+
+        for (int a=x.current_size-1;a>=0;--a) {//loop through all digits of first number backwards
+
             cout << x.ints[a] << endl;
 
             subproduct = (y.ints[i] * x.ints[a]) + carry;
@@ -114,17 +117,20 @@ MyInt operator*(const MyInt &x, const MyInt &y) {
             else {
                 hold = subproduct;
             }
+//            if (temp.current_size==temp.max_size) {
+//                temp.Grow();
+//            }
+            if (temp.current_size==temp.max_size) temp.Grow();
             cout << "                         hold = " << hold << endl;
             cout << "                         carry = " << carry << endl;
-            if (temp.current_size==temp.max_size) {
-                temp.Grow();
-            }
-            temp.ints[a-x.current_size-1] = hold;
+            temp.ints[count] = hold;
+            cout << "count: " << count << endl;
             cout << "temp:  " << temp << endl;
+
+            ++count;
         }
-        cout << "temp:  " << temp << endl;
-        cout << "tempsize:   " << temp.current_size << endl;
-        temp_final = temp_final + temp;
+        //cout << "tempsize:   " << temp.current_size << endl;
+        //temp_final = temp_final + temp;
     }
     return temp_final;
 }
@@ -227,27 +233,34 @@ void MyInt::ConvInt(int n) { //works!!!
 }
 
 ostream &operator<<(ostream &os, const MyInt &s) {
+
     for (int i=0;i<s.current_size;i++) {
         os << s.ints[i];
     }
     return os;
 }
-
-istream &operator>>(istream &is, const MyInt &s) {
-
-    string str;
-    int n = str.length();
-    char arr1[n+1];
-    is >> str;
-    strcpy(arr1, str.c_str());
-
-    for (int i=0;i<n-1;i++) {
-        //s.ints[i] = C2I(arr1[i]);
+//////////////////////////////////////////////////
+istream &operator>>(istream &is, MyInt &s) {
+    char c;
+    int d;
+    int count = 0;
+    while (is.get(c)) {
+        count++;
+        s.ints[count] = c;
+        d = is.peek();
+        if (!isdigit(d)) {
+            break;
+        }
     }
+
+    for (int i=0;i<count;i++) {
+        is >> s.ints[count];
+    }
+
+    //for (int i=0;i<)
     return is;
-
 }
-
+//////////////////////////////////////////////////
 void MyInt::Grow() {
     max_size = current_size + 5;
     int* temp = new int[max_size];
@@ -274,7 +287,7 @@ MyInt &MyInt::operator=(const MyInt & d) {
 MyInt operator++(const MyInt &x) {
     MyInt temp = x;
     temp.ints[temp.current_size] += 1;
-    
+
     return temp;
 }
 
@@ -290,6 +303,7 @@ MyInt operator++(const MyInt &x) {
 //    delete[] ints;
 //    ints = temp;
 //}
+
 
 
 
