@@ -10,7 +10,7 @@ class MyInt
     friend MyInt operator++ (const MyInt& x);
 
     friend ostream& operator<<(ostream&, const MyInt&);
-    friend istream& operator>>(istream&, const MyInt&);
+    friend istream& operator>>(istream&, MyInt&);
 
     friend bool operator< (const MyInt& x, const MyInt& y);
     friend bool operator> (const MyInt& x, const MyInt& y);
