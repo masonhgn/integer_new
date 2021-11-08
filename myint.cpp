@@ -106,9 +106,7 @@ MyInt operator*(const MyInt &x, const MyInt &y) {
         int carry = 0;
 
         for (int a=x.current_size-1;a>=0;--a) {//loop through all digits of first number backwards
-
             cout << x.ints[a] << endl;
-
             subproduct = (y.ints[i] * x.ints[a]) + carry;
             if (subproduct > 9) {
                 carry = subproduct/10;
@@ -117,10 +115,9 @@ MyInt operator*(const MyInt &x, const MyInt &y) {
             else {
                 hold = subproduct;
             }
-//            if (temp.current_size==temp.max_size) {
-//                temp.Grow();
-//            }
-            if (temp.current_size==temp.max_size) temp.Grow();
+            if (temp.current_size==temp.max_size) {
+                temp.Grow();
+            }
             cout << "                         hold = " << hold << endl;
             cout << "                         carry = " << carry << endl;
             temp.ints[count] = hold;
@@ -128,9 +125,11 @@ MyInt operator*(const MyInt &x, const MyInt &y) {
             cout << "temp:  " << temp << endl;
 
             ++count;
+            temp.current_size++;
         }
-        //cout << "tempsize:   " << temp.current_size << endl;
-        //temp_final = temp_final + temp;
+
+        cout << "TEMP: " << temp << endl;
+        //temp = 0;
     }
     return temp_final;
 }
@@ -241,23 +240,22 @@ ostream &operator<<(ostream &os, const MyInt &s) {
 }
 //////////////////////////////////////////////////
 istream &operator>>(istream &is, MyInt &s) {
-    char c;
-    int d;
+    char c = is.get();
     int count = 0;
-    while (is.get(c)) {
-        count++;
-        s.ints[count] = c;
-        d = is.peek();
-        if (!isdigit(d)) {
-            break;
+    while (isdigit(c)) {
+        int x = s.C2I(c);
+
+        if (s.current_size == s.max_size) {
+            s.Grow();
         }
+        cout << x << endl;
+        s.ints[count] = x;
+        count++;
+        s.current_size++;
+        c=is.get();
+        if (!isdigit(c)) break;
     }
 
-    for (int i=0;i<count;i++) {
-        is >> s.ints[count];
-    }
-
-    //for (int i=0;i<)
     return is;
 }
 //////////////////////////////////////////////////
@@ -303,7 +301,6 @@ MyInt operator++(const MyInt &x) {
 //    delete[] ints;
 //    ints = temp;
 //}
-
 
 
 
