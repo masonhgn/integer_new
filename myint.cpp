@@ -128,6 +128,13 @@ MyInt operator*(const MyInt &x, const MyInt &y) {
             temp.current_size++;
         }
 
+        for (int i=0;i<temp.current_size/2;i++) { // reverse order of temp
+            int temp2 = temp.ints[i];
+            temp.ints[i] = temp.ints[temp.current_size-i-1];
+            temp.ints[temp.current_size-i-1] = temp2;
+        }
+
+
         cout << "TEMP: " << temp << endl;
         //temp = 0;
     }
